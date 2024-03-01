@@ -1,7 +1,7 @@
 #' Generate Initial Points within a Raster Layer
 #'
 #' This function generates a specified number of random points within the extent of a given raster layer.
-#' The raster values are rescaled between 0 and 100, with random points geolocated based on rescaled values.
+#' The raster values are scaled between 0 and 100, with random points geolocated based on cell values.
 #' Each point is assigned a unique identifier and a random strain designation from a user-defined range.
 #'
 #' @param test_r A raster object representing the spatial area and suitability score for point generation.
@@ -11,32 +11,10 @@
 #' @return A dataframe of random points with their coordinates, a unique ID, and a strain designation.
 #' @export
 #'
-#' @examples
-#' # Load required packages
-#' library(raster)
-#' library(raptr)
-#'
-#' # Create a test raster
-#' test_raster <- raster(nrow = 10, ncol = 10)
-#' test_raster[] <- runif(ncell(test_raster))
-#'
-#' # Generate random points
-#' random_pts <- initial_generation(test_r = test_raster, n = 50, strain_n = 5)
-#' print(random_pts)
-#'
-initial_generation <- function(test_r, n, strain_n) {
-  # Ensure required libraries are loaded
-  require(raster)
-  require(raptr)
-
-  # Find min and max values
-  range_val <- range(values(test_r), na.rm=T)
-
-  # Rescale the values from 0 to 100
-  rescaled_raster <- (test_r - range_val[1]) / diff(range_val) * 100
+initial_generation <- function(input_r, n, strain_n) {
 
   # Generate n number of random points
-  random_points_data <- raptr::randomPoints(rescaled_raster, n = n, prob = TRUE)
+  random_points_data <- raptr::randomPoints(input_r, n = n, prob = TRUE)
   random_points <- as.data.frame(random_points_data)
 
   # Label coordinates
