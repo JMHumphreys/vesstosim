@@ -105,7 +105,7 @@ quick_plot
 
 </details>
 
-![](notes_files/figure-commonmark/unnamed-chunk-5-1.png)
+![](Demo_files/figure-commonmark/unnamed-chunk-5-1.png)
 
 ## Main Function
 
@@ -132,7 +132,7 @@ dim(spread_sim)
 
 </details>
 
-    [1] 47827     5
+    [1] 58269     5
 
 <details open>
 <summary>Hide code</summary>
@@ -159,10 +159,10 @@ spread_sim %>%
     # A tibble: 4 × 2
       strain   Count
       <chr>    <int>
-    1 strain.1 43438
-    2 strain.2  1871
-    3 strain.3  2050
-    4 strain.4   468
+    1 strain.1 50482
+    2 strain.2  1038
+    3 strain.3  6518
+    4 strain.4   231
 
 <details open>
 <summary>Hide code</summary>
@@ -173,13 +173,13 @@ head(spread_sim)
 
 </details>
 
-      rand.id   strain       lat       long gen
-    1     2.1 strain.4 26.167234 -108.18483   1
-    2     3.1 strain.4 24.403230 -100.64308   1
-    3     4.1 strain.4 35.373368  -95.67442   1
-    4     5.1 strain.3  8.116103  -81.25172   1
-    5     6.1 strain.3 30.214266  -99.54527   1
-    6     6.1 strain.3 30.291729  -99.02963   1
+      rand.id   strain      lat       long gen
+    1     1.1 strain.4 33.11672 -100.38715   1
+    2     2.1 strain.3 30.07584  -98.95731   1
+    3     2.1 strain.3 29.43842  -99.53995   1
+    4     5.1 strain.2 30.99547 -104.01927   1
+    5     5.1 strain.2 30.55787 -103.75090   1
+    6     5.1 strain.2 30.94391 -104.62480   1
 
 ## Animated Generation Series
 
@@ -196,7 +196,7 @@ animate_generations2(
 
 </details>
 
-![](https://github.com/geoepi/vesstosim/assets/sim_generations.gif)
+![](sim_generations.gif)
 
 ## Stepwise Demo of Functions
 
@@ -230,13 +230,13 @@ head(initial_virus)
 
 </details>
 
-           long      lat rand.id   strain
-    1 -101.7987 26.80119       1 strain.3
-    2 -104.4748 25.15440       2 strain.4
-    3 -100.3578 27.41874       3 strain.4
-    4 -102.5192 21.24326       4 strain.2
-    5 -104.1660 36.68196       5 strain.4
-    6 -112.0912 36.06441       6 strain.2
+            long      lat rand.id   strain
+    1 -102.93091 21.34619       1 strain.2
+    2  -98.19637 28.55091       2 strain.3
+    3  -96.75543 17.22920       3 strain.2
+    4  -95.82911 18.05260       4 strain.2
+    5  -88.93315 20.11109       5 strain.3
+    6 -104.57770 20.93449       6 strain.2
 
 View Results  
 Random assignment but weighted by suitabilty score.
@@ -251,7 +251,7 @@ quick_plot
 
 </details>
 
-![](notes_files/figure-commonmark/unnamed-chunk-9-1.png)
+![](Demo_files/figure-commonmark/unnamed-chunk-9-1.png)
 
 ### Create One New Generations
 
@@ -273,7 +273,7 @@ dim(virus_spread)
 
 </details>
 
-    [1] 4612    4
+    [1] 4693    4
 
 <details open>
 <summary>Hide code</summary>
@@ -285,12 +285,12 @@ head(virus_spread) # Note that the rand.id can be traced back to initial point o
 </details>
 
       rand.id   strain      lat      long
-    1     1.1 strain.3 26.84755 -101.2930
-    2     1.1 strain.3 26.40179 -101.5687
-    3     1.1 strain.3 26.45143 -102.1273
-    4     1.1 strain.3 26.39365 -101.5541
-    5     1.1 strain.3 27.16309 -101.4657
-    6     1.1 strain.3 26.77150 -102.3040
+    1     1.1 strain.2 20.89538 -102.9627
+    2     1.1 strain.2 21.01431 -102.5992
+    3     1.1 strain.2 21.22387 -102.4709
+    4     1.1 strain.2 21.28404 -103.4044
+    5     1.1 strain.2 21.58438 -102.5155
+    6     1.1 strain.2 20.97762 -102.6900
 
 View Results Offspring from initial virus locations.
 
@@ -304,7 +304,7 @@ quick_plot
 
 </details>
 
-![](notes_files/figure-commonmark/unnamed-chunk-11-1.png)
+![](Demo_files/figure-commonmark/unnamed-chunk-11-1.png)
 
 ### Random Removal
 
@@ -322,7 +322,7 @@ dim(extant_virus)
 
 </details>
 
-    [1] 2766    4
+    [1] 2846    4
 
 <details open>
 <summary>Hide code</summary>
@@ -333,13 +333,13 @@ head(extant_virus)
 
 </details>
 
-      rand.id   strain      lat       long
-    1     1.1 strain.3 26.84755 -101.29298
-    2     1.1 strain.3 26.40179 -101.56865
-    3     1.1 strain.3 27.16309 -101.46568
-    4     1.1 strain.3 26.77150 -102.30396
-    5     3.1 strain.4 27.52223  -99.88719
-    6     3.1 strain.4 26.97166 -100.43862
+      rand.id   strain      lat      long
+    1     1.1 strain.2 20.89538 -102.9627
+    2     1.1 strain.2 21.01431 -102.5992
+    3     1.1 strain.2 21.22387 -102.4709
+    4     1.1 strain.2 21.28404 -103.4044
+    5     1.1 strain.2 21.58438 -102.5155
+    6     1.1 strain.2 20.97762 -102.6900
 
 View Results  
 View first generation offspring after local extinction.
@@ -354,7 +354,7 @@ quick_plot
 
 </details>
 
-![](notes_files/figure-commonmark/unnamed-chunk-13-1.png)
+![](Demo_files/figure-commonmark/unnamed-chunk-13-1.png)
 
 ### Simulate Multiple Generations
 
@@ -379,7 +379,7 @@ dim(spread_sim)
 
 </details>
 
-    [1] 20844     5
+    [1] 21585     5
 
 <details open>
 <summary>Hide code</summary>
@@ -402,12 +402,12 @@ head(spread_sim)
 </details>
 
       rand.id   strain      lat       long gen
-    1     1.1 strain.3 16.66342  -91.58108   1
-    2     2.1 strain.1 26.88854 -102.59401   1
-    3     2.1 strain.1 26.17508 -103.20174   1
-    4     3.1 strain.1 28.01472  -97.95462   1
-    5     3.1 strain.1 28.72546  -98.03157   1
-    6     3.1 strain.1 28.11722  -97.85347   1
+    1     1.1 strain.4 35.39683  -97.92594   1
+    2     1.1 strain.4 34.82415  -97.84398   1
+    3     2.1 strain.2 22.36759  -99.50271   1
+    4     2.1 strain.2 22.51907  -99.79097   1
+    5     2.1 strain.2 21.71239 -100.14079   1
+    6     3.1 strain.1 16.31942  -92.77536   1
 
 View Results  
 Panel View of simulation.
@@ -422,4 +422,4 @@ quick_plot
 
 </details>
 
-![](notes_files/figure-commonmark/unnamed-chunk-15-1.png)
+![](Demo_files/figure-commonmark/unnamed-chunk-15-1.png)

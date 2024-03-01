@@ -1,0 +1,172 @@
+---
+title: "Simulated Disease Spread"  
+description: "Spatial virus distribution simulation (Vesicular stomatitis)"
+format: 
+   gfm:
+     toc: true
+     toc-depth: 2
+     code-fold: show
+     code-summary: "Hide code"
+     preview-mode: raw
+editor_options: 
+  chunk_output_type: console
+---
+
+## Libraries
+```{r warning=FALSE, message=FALSE}
+library(tidyverse)
+library(gganimate)
+library(raster)
+library(terra)
+library(raptr)
+library(here)
+```
+
+Load **vesstosim** functions:
+```{r}
+library(vesstosim)
+```
+
+## Load Example Raster  
+This is a stack with 16 temperature layers derived from MIROC6 (https://wcrp-cmip.org/nodes/miroc/).
+```{r}
+test_r <- rast(here("assets/MIROC6_012222.tif"))[[1]]
+test_r
+```
+
+## Prepare Raster
+This function strips the geographic projection and optionally scales values to the 0-100 range required for other functions.  This example raster has a Mercator projection and negative cell values, so it needs some preprocessing.
+```{r}
+test_r <- prep_raster(test_r, scale=TRUE)
+test_r <- aggregate(test_r, fact=2) # more coarse to speed up, more cell = more time
+test_r
+
+
+```
+
+### View Results
+```{r fig.width=8,fig.height=6, warning=FALSE, message=FALSE}
+quick_plot <- plot_mappoints(test_r, plot.title = "Fake Suitabilty Model")
+quick_plot
+```
+
+## Main Function
+
+## Simulate Multiple Generations  
+Several generations are simulated, each dependent on the previous.  May take a couple minutes...  
+```{r}
+spread_sim <- simulate_generations(gen_n = 5,        # Number of generations to simulate 
+                                   input_r = test_r,  # Environmental suitability raster
+                                   n = 500,           # Initial population size
+                                   strain_n = 4,      # number of strains to randomly assign
+                                   mean_dis = 50,     # mean virus movement distance (km)
+                                   R0 = c(1,3,2,5)    # Reproduction number, mean offspring
+                                   )                  # can be unique R0 by strain
+
+
+dim(spread_sim)
+range(spread_sim$gen)
+
+spread_sim %>%
+  group_by(strain) %>%
+  summarise(Count = length(strain))
+
+head(spread_sim)
+```
+
+## Animated Generation Series
+```{r eval=FALSE, fig.width=8,fig.height=6, warning=FALSE, message=FALSE}
+animate_generations2(
+  raster_layer = test_r, # suitability for map background
+  point_data = spread_sim, # data simulated above
+  output_file = "./assets/sim_generations.gif" # name for saved gif
+)
+```
+
+![](sim_generations.gif)
+
+
+## Stepwise Demo of Functions
+
+### Generate Initial Virus Locations  
+Eventually, different strains could be assigned different virulence or habitat/vector requirements.
+```{r}
+initial_virus <- initial_generation(input_r = test_r, #climate raster for testing
+                                    n = 1000,        #number to create
+                                    strain_n = 4)    #random strain names
+
+
+dim(initial_virus)
+head(initial_virus)
+```
+
+View Results  
+Random assignment but weighted by suitabilty score.
+```{r fig.width=8,fig.height=6, warning=FALSE, message=FALSE}
+quick_plot <- plot_mappoints(test_r, initial_virus, "Suitabilty and Initial Points")
+quick_plot
+```
+
+### Create One New Generations  
+Movement distance (mean_dis) from source location and the number of offspring produced (R0) are stochastic.
+```{r}
+virus_spread <- generation_iterate(random_points = initial_virus,
+                                   mean_dis = 50, #mean of a normal dist, stochastic distance
+                                   R0 = 5, #mean of a poisson dist, stochastic offspring N
+                                   input_raster = test_r #suitability grid
+                                   )
+
+dim(virus_spread)
+head(virus_spread) # Note that the rand.id can be traced back to initial point of origin
+```
+
+View Results 
+Offspring from initial virus locations.
+```{r fig.width=8,fig.height=6, warning=FALSE, message=FALSE}
+quick_plot <- plot_mappoints(test_r, virus_spread, "1st Generation Offspring")
+quick_plot
+```
+
+
+### Random Removal 
+Random extinction and removal.  Probability of extinction is related to environmental suitability but stochastic.
+```{r}
+extant_virus <- virus_cull(input_r=test_r, points_df=virus_spread)
+
+dim(extant_virus)
+head(extant_virus)
+```
+
+View Results    
+View first generation offspring after local extinction.
+```{r fig.width=8,fig.height=6, warning=FALSE, message=FALSE}
+quick_plot <- plot_mappoints(test_r, extant_virus, "Random Extiction from 1st Generation")
+quick_plot
+```
+
+### Simulate Multiple Generations  
+Several generations are simulated, each dependent on the previous.  May take a couple minutes...  
+```{r}
+spread_sim <- simulate_generations(gen_n = 5,        # Number of generations to simulate 
+                                   input_r = test_r,  # Environmental suitability raster
+                                   n = 500,           # Initial population size
+                                   strain_n = 4,      # number of strains to randomly assign
+                                   mean_dis = 50,     # mean virus movement distance (km)
+                                   R0 = 3             # Reproduction number, mean offspring
+                                   )
+
+
+dim(spread_sim)
+range(spread_sim$gen)
+head(spread_sim)
+```
+
+View Results    
+Panel View of simulation.
+```{r fig.width=8,fig.height=15, warning=FALSE, message=FALSE}
+quick_plot <- plot_generations(test_r, spread_sim, "Multiple Generations")
+quick_plot
+```
+
+
+
