@@ -27,7 +27,7 @@ simulate_generations <- function(gen_n, input_r, n = 500, strain_n = 4, mean_dis
 
   for(i in 1:gen_n){
     # Perform virus spread simulation
-    spread_steps <- generation_iterate(random_points = current_pool,
+    spread_steps <- generation_iterate2(random_points = current_pool,
                                        mean_dis = mean_dis,
                                        R0 = R0,
                                        input_raster = input_r)
