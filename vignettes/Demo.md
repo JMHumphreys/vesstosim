@@ -118,12 +118,12 @@ take a couple minutes…
 <summary>Hide code</summary>
 
 ``` r
-spread_sim <- simulate_generations(gen_n = 5,        # Number of generations to simulate 
+spread_sim <- simulate_generations(gen_n = 15,        # Number of generations to simulate 
                                    input_r = test_r,  # Environmental suitability raster
                                    n = 500,           # Initial population size
                                    strain_n = 4,      # number of strains to randomly assign
                                    mean_dis = 50,     # mean virus movement distance (km)
-                                   R0 = c(1,3,2,5)    # Reproduction number, mean offspring
+                                   R0 = c(1,1.5,2,3)  # Reproduction number, mean offspring
                                    )                  # can be unique R0 by strain
 
 
@@ -132,7 +132,7 @@ dim(spread_sim)
 
 </details>
 
-    [1] 58269     5
+    [1] 169372      5
 
 <details open>
 <summary>Hide code</summary>
@@ -143,7 +143,7 @@ range(spread_sim$gen)
 
 </details>
 
-    [1] 1 5
+    [1]  1 15
 
 <details open>
 <summary>Hide code</summary>
@@ -157,12 +157,12 @@ spread_sim %>%
 </details>
 
     # A tibble: 4 × 2
-      strain   Count
-      <chr>    <int>
-    1 strain.1 50482
-    2 strain.2  1038
-    3 strain.3  6518
-    4 strain.4   231
+      strain    Count
+      <chr>     <int>
+    1 strain.1   4243
+    2 strain.2  49453
+    3 strain.3 110729
+    4 strain.4   4947
 
 <details open>
 <summary>Hide code</summary>
@@ -174,12 +174,12 @@ head(spread_sim)
 </details>
 
       rand.id   strain      lat       long gen
-    1     1.1 strain.4 33.11672 -100.38715   1
-    2     2.1 strain.3 30.07584  -98.95731   1
-    3     2.1 strain.3 29.43842  -99.53995   1
-    4     5.1 strain.2 30.99547 -104.01927   1
-    5     5.1 strain.2 30.55787 -103.75090   1
-    6     5.1 strain.2 30.94391 -104.62480   1
+    1     1.1 strain.1 17.86939  -98.51073   1
+    2     4.1 strain.1 34.34989 -112.92896   1
+    3     5.1 strain.3 29.59420 -100.73991   1
+    4     5.1 strain.3 29.57425 -100.76328   1
+    5     6.1 strain.4 19.08505 -100.88732   1
+    6     6.1 strain.4 18.23934 -100.80351   1
 
 ## Animated Generation Series
 
@@ -190,7 +190,7 @@ head(spread_sim)
 animate_generations2(
   raster_layer = test_r, # suitability for map background
   point_data = spread_sim, # data simulated above
-  output_file = "./assets/sim_generations.gif" # name for saved gif
+  output_file = "sim_generations.gif" # name for saved gif
 )
 ```
 
@@ -231,12 +231,12 @@ head(initial_virus)
 </details>
 
             long      lat rand.id   strain
-    1 -102.93091 21.34619       1 strain.2
-    2  -98.19637 28.55091       2 strain.3
-    3  -96.75543 17.22920       3 strain.2
-    4  -95.82911 18.05260       4 strain.2
-    5  -88.93315 20.11109       5 strain.3
-    6 -104.57770 20.93449       6 strain.2
+    1 -106.63620 31.74158       1 strain.2
+    2  -98.50515 36.78489       2 strain.4
+    3  -98.81392 29.06554       3 strain.2
+    4 -111.88536 32.56498       4 strain.1
+    5  -89.85948 15.47948       5 strain.1
+    6 -100.35779 18.05260       6 strain.1
 
 View Results  
 Random assignment but weighted by suitabilty score.
@@ -273,7 +273,7 @@ dim(virus_spread)
 
 </details>
 
-    [1] 4693    4
+    [1] 4672    4
 
 <details open>
 <summary>Hide code</summary>
@@ -285,12 +285,12 @@ head(virus_spread) # Note that the rand.id can be traced back to initial point o
 </details>
 
       rand.id   strain      lat      long
-    1     1.1 strain.2 20.89538 -102.9627
-    2     1.1 strain.2 21.01431 -102.5992
-    3     1.1 strain.2 21.22387 -102.4709
-    4     1.1 strain.2 21.28404 -103.4044
-    5     1.1 strain.2 21.58438 -102.5155
-    6     1.1 strain.2 20.97762 -102.6900
+    1     1.1 strain.2 31.30032 -106.7221
+    2     1.1 strain.2 31.52144 -107.1214
+    3     1.1 strain.2 31.30435 -106.6890
+    4     1.1 strain.2 31.67790 -107.1596
+    5     1.1 strain.2 31.31868 -106.4258
+    6     1.1 strain.2 31.30654 -106.4366
 
 View Results Offspring from initial virus locations.
 
@@ -322,7 +322,7 @@ dim(extant_virus)
 
 </details>
 
-    [1] 2846    4
+    [1] 2832    4
 
 <details open>
 <summary>Hide code</summary>
@@ -333,13 +333,13 @@ head(extant_virus)
 
 </details>
 
-      rand.id   strain      lat      long
-    1     1.1 strain.2 20.89538 -102.9627
-    2     1.1 strain.2 21.01431 -102.5992
-    3     1.1 strain.2 21.22387 -102.4709
-    4     1.1 strain.2 21.28404 -103.4044
-    5     1.1 strain.2 21.58438 -102.5155
-    6     1.1 strain.2 20.97762 -102.6900
+      rand.id   strain      lat       long
+    1     1.1 strain.2 31.30032 -106.72213
+    2     1.1 strain.2 31.30435 -106.68897
+    3     1.1 strain.2 31.31868 -106.42577
+    4     1.1 strain.2 31.30654 -106.43656
+    5     2.1 strain.4 36.43267  -98.14799
+    6     2.1 strain.4 36.32542  -98.50386
 
 View Results  
 View first generation offspring after local extinction.
@@ -379,7 +379,7 @@ dim(spread_sim)
 
 </details>
 
-    [1] 21585     5
+    [1] 18862     5
 
 <details open>
 <summary>Hide code</summary>
@@ -402,12 +402,12 @@ head(spread_sim)
 </details>
 
       rand.id   strain      lat       long gen
-    1     1.1 strain.4 35.39683  -97.92594   1
-    2     1.1 strain.4 34.82415  -97.84398   1
-    3     2.1 strain.2 22.36759  -99.50271   1
-    4     2.1 strain.2 22.51907  -99.79097   1
-    5     2.1 strain.2 21.71239 -100.14079   1
-    6     3.1 strain.1 16.31942  -92.77536   1
+    1     1.1 strain.3 29.85818 -100.17598   1
+    2     1.1 strain.3 30.08495 -100.45134   1
+    3     4.1 strain.1 22.63088 -102.30805   1
+    4     4.1 strain.1 21.87892 -102.25189   1
+    5     5.1 strain.1 36.16913  -94.57906   1
+    6     5.1 strain.1 35.49101  -94.52694   1
 
 View Results  
 Panel View of simulation.
