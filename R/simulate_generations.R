@@ -16,7 +16,7 @@
 #' @return A data frame representing the combined data of all generations after the
 #'         simulation, with each row corresponding to a surviving viral particle and
 #'         including the generation number.
-simulate_generations <- function(gen_n, input_r, n = 500, strain_n = 4, mean_dis = 50, R0 = 2) {
+simulate_generations <- function(gen_n, input_r, n = 500, strain_n = 4, mean_dis = 50, R0 = 2, min_cull = 0.2) {
   # gen_n: number of generations to simulate
   # input_r: the input suitability
 
@@ -28,15 +28,15 @@ simulate_generations <- function(gen_n, input_r, n = 500, strain_n = 4, mean_dis
   for(i in 1:gen_n){
     # Perform virus spread simulation
     spread_steps <- generation_iterate2(random_points = current_pool,
-                                       mean_dis = mean_dis,
-                                       R0 = R0,
-                                       input_raster = input_r)
+                                        mean_dis = mean_dis,
+                                        R0 = R0,
+                                        input_raster = input_r)
 
     # Record generation number for tracking
     spread_steps$gen <- i
 
     # Apply culling
-    gen_survive <- virus_cull(input_r=input_r, points_df=spread_steps)
+    gen_survive <- virus_cull(input_r=input_r, points_df=spread_steps, min_cull = min_cull)
 
     all_generations <- rbind(all_generations, gen_survive)
 

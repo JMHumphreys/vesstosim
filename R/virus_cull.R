@@ -12,7 +12,7 @@
 #'        latitude ('lat') representing their geographic locations.
 #' @return A data frame containing only the points that have survived (not culled),
 #'         with the 'decisions' column removed.
-virus_cull <- function(input_r, points_df) {
+virus_cull <- function(input_r, points_df, min_cull) {
 
   points_vect <- vect(points_df, geom=c("long", "lat"), crs="", keepgeom=TRUE)
 
@@ -25,11 +25,16 @@ virus_cull <- function(input_r, points_df) {
   # Inverse of raster value, convert to probability range
   points_vect[["extinct_prob"]] <- (100 - points_vect[["extinct_prob"]])/100
 
+  # Apply the minimum culling threshold (ensuring extinct_prob is not less than min_cull)
+  points_vect[["extinct_prob"]] <- pmax(points_vect[["extinct_prob"]], min_cull)
+
+
   # Make a random decision based on extinct_prob for each point
   points_df$decisions <- runif(nrow(points_vect)) < points_vect$extinct_prob
 
   # Keep only the points that were not 'extinct'
-  extant_points <- points_df %>% filter(decisions == FALSE)
+  #extant_points <- points_df %>% filter(decisions == FALSE)
+  extant_points <- points_df %>% filter(is.na(decisions) == FALSE)
 
   extant_points[,"decisions"] <- NULL
 
